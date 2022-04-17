@@ -3,23 +3,28 @@ package storage_test
 import (
 	"discordbot/internal/core/storage"
 	"discordbot/internal/env"
-	"fmt"
+	"discordbot/internal/logger"
+	"os"
 	"testing"
 
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestConnection(t *testing.T) {
+func TestStorageConnection(t *testing.T) {
 
-	env.LoadEnv()
+	assert := assert.New(t)
 
-	db, _ := storage.New()
+	env.LoadEnv("../../../.development.env")
 
-	ver := db.GetVersion()
-	if ver == "NULL" {
-		t.Error("CANNOT GET VERSION")
-	} else {
-		fmt.Println(ver)
+	logger.TestLog.Println("Database PATH: ", os.Getenv("DB_ADDR"))
+
+	storer, err := storage.New()
+	if err != nil {
+		t.Fail()
 	}
 
+	var a string = "8.0.28"
+	var b = storer.GetVersion()
+
+	assert.Equal(a, b, "MySql version should be the same")
 }

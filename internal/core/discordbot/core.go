@@ -11,6 +11,7 @@ import (
 
 type App struct {
 	discordClient *discord.Session
+	BotID         string
 	storage       storage.Storer
 	ready         chan error
 }

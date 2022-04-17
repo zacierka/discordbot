@@ -12,7 +12,7 @@ func TestEnv(t *testing.T) {
 
 	assert := assert.New(t)
 
-	env.LoadEnv()
+	env.LoadEnv("../../.env")
 
 	var a string = "LOADED"
 	var b string = os.Getenv("LOADED")

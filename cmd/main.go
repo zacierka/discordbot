@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-	env.LoadEnv()
+	env.LoadEnv(".env")
 
 	discordbot.Start()
 }
