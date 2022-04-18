@@ -5,6 +5,8 @@ import (
 	"discordbot/internal/logger"
 	"os"
 	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Storer interface {
@@ -19,7 +21,7 @@ func New() (s *SqlStorer, err error) {
 	s = &SqlStorer{}
 	s.instance, err = connection()
 	if err != nil {
-		logger.ErrorLog.Fatalln("Problem setting SqlStorer instance")
+		logger.LOGFATAL("Problem setting SqlStorer instance")
 	}
 
 	return
@@ -33,10 +35,10 @@ func connection() (d *sql.DB, err error) {
 
 	d, err = sql.Open("mysql", PATH)
 	if err != nil {
-		logger.ErrorLog.Println("Failed to Open connection with PATH: ", PATH)
+		logger.LOGERR("Failed to Open connection with PATH: ", PATH)
 		return nil, sql.ErrConnDone
 	}
-	logger.InfoLog.Println("Established Connection to database")
+	logger.LOGMSG("Established Connection to mysql-database")
 	d.SetConnMaxLifetime(time.Minute * 3)
 	d.SetMaxOpenConns(10)
 	d.SetMaxIdleConns(10)

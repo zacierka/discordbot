@@ -14,9 +14,8 @@ func TestStorageConnection(t *testing.T) {
 
 	assert := assert.New(t)
 
-	env.LoadEnv("../../../.development.env")
-
-	logger.TestLog.Println("Database PATH: ", os.Getenv("DB_ADDR"))
+	env.LoadEnv("../../../.env")
+	logger.LOGMSG("Database PATH: ", os.Getenv("DB_ADDR"))
 
 	storer, err := storage.New()
 	if err != nil {

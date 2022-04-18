@@ -11,7 +11,7 @@ import (
 func (app *App) ConnectDiscord() (err error) {
 	s, err := discordgo.New("Bot " + os.Getenv("TOKEN"))
 	if err != nil {
-		logger.ErrorLog.Fatalln("TOKEN INVALID")
+		logger.LOGFATAL("TOKEN INVALID")
 	}
 
 	app.discordClient = discord.New(s)
@@ -19,8 +19,8 @@ func (app *App) ConnectDiscord() (err error) {
 	app.discordClient.S.AddHandler(app.onReady)
 	app.discordClient.S.AddHandler(app.onMessage)
 
-	intent := discordgo.MakeIntent(discordgo.IntentsAllWithoutPrivileged | discordgo.IntentsGuildMembers)
-	logger.InfoLog.Println("Added Intents")
+	intent := discordgo.MakeIntent(discordgo.IntentGuildMessages | discordgo.IntentGuildMembers)
+	logger.LOGMSG("Added Intents")
 	app.discordClient.S.Identify.Intents = intent
 
 	err = app.discordClient.S.Open()
@@ -51,6 +51,10 @@ func (app *App) onMessage(s *discordgo.Session, event *discordgo.MessageCreate) 
 		<-app.ready
 	}
 
+	if bot := event.Author.Bot; bot {
+		return
+	}
+
 	ch, err := app.discordClient.S.Channel(event.ChannelID)
 	if err != nil {
 		return
@@ -59,10 +63,11 @@ func (app *App) onMessage(s *discordgo.Session, event *discordgo.MessageCreate) 
 		return
 	}
 
-	if event.Message.Author.ID == app.BotID {
-		return
-	}
-
-	logger.InfoLog.Println("Message Recieved: ", event.Content)
-	s.ChannelMessageSend(ch.ID, app.storage.GetVersion())
+	logger.LOGMSG("Message Recieved: ", event.Content)
+	// Add some message handler here.
+	// CommandManager of some sort
+	//  - feature to include:
+	//    + enable/disable feature for group of commands requiring database connection
+	//    + enable/disable feature for group of commands requiring minecraft server status to be active
+	//  - maybe something along the lines of a module system where command categories can be disabled due to limitations or services
 }

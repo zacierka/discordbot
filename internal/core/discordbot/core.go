@@ -22,12 +22,12 @@ func Start() {
 
 	app.storage, err = storage.New()
 	if err != nil {
-		logger.ErrorLog.Println("Could not initialize storage on app")
+		logger.LOGERR("Could not initialize storage on app")
 	}
 
 	err = app.ConnectDiscord()
 	if err != nil {
-		logger.ErrorLog.Fatalln("Could not initialize bot")
+		logger.LOGFATAL("Could not initialize bot: ", err.Error())
 	}
 
 	signals := make(chan os.Signal, 1)

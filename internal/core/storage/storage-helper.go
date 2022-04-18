@@ -2,7 +2,7 @@ package storage
 
 import (
 	"database/sql"
-	"fmt"
+	"discordbot/internal/logger"
 )
 
 func (m *SqlStorer) GetVersion() (s string) {
@@ -11,7 +11,7 @@ func (m *SqlStorer) GetVersion() (s string) {
 	err := m.instance.QueryRow("SELECT @@VERSION").Scan(&s)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			fmt.Println("bad")
+			logger.LOGERR("GetVersion - Query Returned No Rows")
 		}
 	}
 	return s

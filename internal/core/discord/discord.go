@@ -17,5 +17,5 @@ func New(s *discordgo.Session) (d *Session) {
 }
 
 func (s *Session) ready(session *discordgo.Session, event *discordgo.Ready) {
-	logger.InfoLog.Println("Bot established connection to discord API")
+	logger.LOGMSG("Bot established connection to discord API")
 }
