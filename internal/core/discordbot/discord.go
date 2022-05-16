@@ -64,6 +64,8 @@ func (app *App) onMessage(s *discordgo.Session, event *discordgo.MessageCreate) 
 	}
 
 	logger.LOGMSG("Message Recieved: ", event.Content)
+
+	handleCommand(s, event)
 	// Add some message handler here.
 	// CommandManager of some sort
 	//  - feature to include:
