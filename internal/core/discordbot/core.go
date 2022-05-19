@@ -20,10 +20,10 @@ func Start() {
 	var app = &App{}
 	var err error
 
-	// app.storage, err = storage.New()
-	// if err != nil {
-	// 	logger.LOGERR("Could not initialize storage on app")
-	// }
+	app.storage, err = storage.New()
+	if err != nil {
+		logger.LOGERR("Could not initialize storage on app")
+	}
 	app.storage = nil
 
 	err = app.ConnectDiscord()
